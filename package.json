@@ -12,6 +12,9 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.7",
+    "axios": "^1.10.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.6.0",
@@ -32,5 +35,10 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.32.1",
     "vite": "^6.3.5"
-  }
+  },
+  "description": "1. To, integrate `Redux`, let's install the following necessary dependencies.\r ```shell\r npm install redux react-redux\r npm install @reduxjs/toolkit\r ```\r 2. Now, let's create the `store.ts` inside a folder called `store` inside `src` folder.\r ```typescript\r import { configureStore } from '@reduxjs/toolkit';",
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

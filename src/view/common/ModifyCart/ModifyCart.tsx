@@ -1,58 +1,41 @@
-import {useEffect, useState} from "react";
-import type {CartItem} from "../../../model/CartItem.ts";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../../store/store";
+import { decreaseQuantity, increaseQuantity } from "../../../slices/cartSlice";
 
 interface ModifyCartProps {
-    data: any
+    data: any;
 }
 
-export const itemsList:CartItem[] = [];
 export function ModifyCart({ data }: ModifyCartProps) {
-    const [itemCount, setItemCount]
-        = useState(1);
+    const dispatch = useDispatch<AppDispatch>();
 
-    useEffect(() => {
+    const item = useSelector((state: RootState) =>
+        state.cart.items.find(cartItem => cartItem.product.id === data.id)
+    );
 
-        const existingItem = itemsList
-            .find(item =>
-            item.product.id === data.id);
-        if (existingItem) {
-            existingItem.itemCount = itemCount;
-        } else {
-            itemsList.push({
-                product: data,
-                itemCount: itemCount
-            });
-        }
-        console.log(itemsList);
-    }, [itemCount, data])
     const decreaseItemCount = () => {
-        setItemCount(prevValue =>
-            prevValue > 1
-                ? prevValue - 1
-                : (alert("Item count can't " +
-                        "be less than 1"),
-                        prevValue
-                )
-        )
-    }
+        if (item && item.itemCount > 1) {
+            dispatch(decreaseQuantity(data.id));
+        } else {
+            alert("Item count can't be less than 1");
+        }
+    };
+
     const increaseItemCount = () => {
-        setItemCount(prvCount =>
-            prvCount + 1)
-    }
+        dispatch(increaseQuantity(data.id));
+    };
 
     return (
-        <div className="w-full mt-4 p-[2.4px]
-                        text-[8px] text-center">
-            <button className="float-left
-                 text-[1.2rem] bg-yellow-300
-                 rounded-lg h-[2.2rem] w-[2.2rem]"
-                 onClick={decreaseItemCount}>-</button>
-            <small
-                className="text-[1.3rem]">{itemCount}</small>
-            <button className="float-right
-                 text-[1.2rem] bg-yellow-300
-                 rounded-lg h-[2.2rem] w-[2.2rem]"
-             onClick={increaseItemCount}>+</button>
+        <div className="w-full mt-4 p-[2.4px] text-[8px] text-center">
+            <button
+                className="float-left text-[1.2rem] bg-yellow-300 rounded-lg h-[2.2rem] w-[2.2rem]"
+                onClick={decreaseItemCount}
+            >-</button>
+            <small className="text-[1.3rem]">{item?.itemCount || 1}</small>
+            <button
+                className="float-right text-[1.2rem] bg-yellow-300 rounded-lg h-[2.2rem] w-[2.2rem]"
+                onClick={increaseItemCount}
+            >+</button>
         </div>
     );
 }
